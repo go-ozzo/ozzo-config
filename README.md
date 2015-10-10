@@ -1,5 +1,7 @@
 # go-ozzo/config - a configuration handling package for Go
 
+[![Build Status](https://travis-ci.org/go-ozzo/config.svg?branch=master)](https://travis-ci.org/go-ozzo/config)
+
 go-ozzo/config is a Go package for handling configurations in Go applications. It supports
 
 * reading JSON (with comments), YAML, and TOML configuration files

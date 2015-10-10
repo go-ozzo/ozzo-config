@@ -6,7 +6,7 @@ package config_test
 
 import (
 	"fmt"
-	"github.com/goseal/config"
+	"github.com/go-ozzo/config"
 )
 
 func Example() {
