@@ -1,9 +1,9 @@
-# go-ozzo/config - a configuration handling package for Go
+# ozzo-config
 
-[![Build Status](https://travis-ci.org/go-ozzo/config.svg?branch=master)](https://travis-ci.org/go-ozzo/config)
-[![GoDoc](https://godoc.org/github.com/go-ozzo/config?status.png)](http://godoc.org/github.com/go-ozzo/config)
+[![Build Status](https://travis-ci.org/go-ozzo/ozzo-config.svg?branch=master)](https://travis-ci.org/go-ozzo/ozzo-config)
+[![GoDoc](https://godoc.org/github.com/go-ozzo/ozzo-config?status.png)](http://godoc.org/github.com/go-ozzo/ozzo-config)
 
-go-ozzo/config is a Go package for handling configurations in Go applications. It supports
+ozzo-config is a Go package for handling configurations in Go applications. It supports
 
 * reading JSON (with comments), YAML, and TOML configuration files
 * merging multiple configurations
@@ -19,7 +19,7 @@ Go 1.2 or above.
 Run the following command to install the package:
 
 ```
-go get github.com/go-ozzo/config
+go get github.com/go-ozzo/ozzo-config
 ```
 
 ## Getting Started
@@ -31,7 +31,7 @@ package main
 
 import (
     "fmt"
-    "github.com/go-ozzo/config"
+    "github.com/go-ozzo/ozzo-config"
 )
 
 func main() {

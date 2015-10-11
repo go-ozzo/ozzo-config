@@ -6,7 +6,7 @@ package config_test
 
 import (
 	"fmt"
-	"github.com/go-ozzo/config"
+	"github.com/go-ozzo/ozzo-config"
 )
 
 func Example() {
