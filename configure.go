@@ -225,13 +225,16 @@ func (c *Config) configureStruct(v, config reflect.Value, path string) error {
 		if !field.IsValid() {
 			return &ConfigValueError{path, fmt.Sprintf("field %v not found in struct %v", k.String(), v.Type())}
 		}
+		if !field.CanSet() {
+			return &ConfigValueError{path, fmt.Sprintf("field %v cannot be set", k.String())}
+		}
 		if field.Kind() == reflect.Ptr {
 			if field.IsNil() {
 				field.Set(reflect.New(field.Type().Elem()))
 			}
 			field = field.Elem()
 		}
-		if err := c.configure(field, mapIndex(config, k), path + k.String()); err != nil {
+		if err := c.configure(field, mapIndex(config, k), path + "." + k.String()); err != nil {
 			return err
 		}
 	}
