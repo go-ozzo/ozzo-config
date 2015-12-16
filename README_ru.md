@@ -54,7 +54,7 @@ func main() {
     var author struct {
         Name, Email string
     }
-    // заполнить объект author из конфигурации используя "Author"
+    // заполняем объект author из конфигурации используя "Author"
     c.Configure(&author, "Author")
 
     fmt.Println(version)
