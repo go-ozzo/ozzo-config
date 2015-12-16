@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/go-ozzo/ozzo-config.svg?branch=master)](https://travis-ci.org/go-ozzo/ozzo-config)
 [![Coverage](http://gocover.io/_badge/github.com/go-ozzo/ozzo-config)](http://gocover.io/github.com/go-ozzo/ozzo-config)
 
-ozzo-config это Go-пакет для работы с конфигурациями в прилажениях на Go. Он поддерживает
+ozzo-config это Go-пакет для работы с конфигурациями в приложениях на Go. Он поддерживает
 
 * чтение конфигуационных файлов JSON (с комментариями), YAML, и TOML
 * объединение множественных конфигураций
