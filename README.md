@@ -4,6 +4,12 @@
 [![Build Status](https://travis-ci.org/go-ozzo/ozzo-config.svg?branch=master)](https://travis-ci.org/go-ozzo/ozzo-config)
 [![Coverage](http://gocover.io/_badge/github.com/go-ozzo/ozzo-config)](http://gocover.io/github.com/go-ozzo/ozzo-config)
 
+## Other languages
+
+[Русский](/docs/README-ru.md)
+
+## Description
+
 ozzo-config is a Go package for handling configurations in Go applications. It supports
 
 * reading JSON (with comments), YAML, and TOML configuration files
