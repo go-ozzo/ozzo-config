@@ -16,6 +16,7 @@ ozzo-config is a Go package for handling configurations in Go applications. It s
 * merging multiple configurations
 * accessing any part of the configuration
 * configuring an object using a part of the configuration
+* adding new configuration file formats
 
 ## Requirements
 
@@ -131,3 +132,9 @@ the `Name` and `Email` fields of a struct.
 When configuring a nil interface, you have to specify the concrete type in the configuration via a `type` element
 in the configuration map. The type should also be registered first by calling `Register()` so that it knows
 how to create a concrete instance.
+
+## New Configuration File Formats
+
+ozzo-config supports three configuration file formats out-of-box: JSON (can contain comments), YAML, and TOML.
+To support reading new file formats, you should modify the `config.UnmarshalFuncMap` variable by mapping a
+new file extension to the corresponding unmarshal function.

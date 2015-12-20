@@ -19,6 +19,28 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// UnmarshalFunc parses the given configuration and populates it into the given variable.
+type UnmarshalFunc func([]byte,  interface{}) error
+
+// UnmarshalFuncMap maps configuration file extensions to the corresponding unmarshal functions.
+var UnmarshalFuncMap = map[string]UnmarshalFunc{
+	".yaml": yaml.Unmarshal,
+	".yml": yaml.Unmarshal,
+	".json": func(bytes []byte, data interface{}) (err error) {
+		if bytes, err = stripJSONComments(bytes); err != nil {
+			return
+		}
+		if err = json.Unmarshal(bytes, data); err != nil {
+			return
+		}
+		return nil
+	},
+	".toml": func(bytes []byte, data interface{}) error {
+		_, err := toml.Decode(string(bytes), data)
+		return err
+	},
+}
+
 // FileTypeError describes the name of a file whose format is not supported.
 type FileTypeError string
 
@@ -287,27 +309,11 @@ func load(file string, data interface{}) error {
 		return err
 	}
 
-	switch strings.ToLower(filepath.Ext(file)) {
-	case ".json":
-		if bytes, err = stripJSONComments(bytes); err != nil {
-			return err
-		}
-		if err := json.Unmarshal(bytes, data); err != nil {
-			return err
-		}
-	case ".yaml", ".yml":
-		if err := yaml.Unmarshal(bytes, data); err != nil {
-			return err
-		}
-	case ".toml":
-		if _, err := toml.Decode(string(bytes), data); err != nil {
-			return err
-		}
-	default:
-		return FileTypeError(file)
+	ext := strings.ToLower(filepath.Ext(file))
+	if unmarshal, ok := UnmarshalFuncMap[ext]; ok {
+		return unmarshal(bytes, data)
 	}
-
-	return nil
+	return FileTypeError(file)
 }
 
 func merge(v1, v2 reflect.Value) reflect.Value {
