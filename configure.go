@@ -5,8 +5,8 @@
 package config
 
 import (
-	"reflect"
 	"fmt"
+	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
@@ -174,7 +174,7 @@ func (c *Config) configureArray(v, config reflect.Value, path string) error {
 		n = v.Cap()
 	}
 	for i := 0; i < n; i++ {
-		if err := c.configure(v.Index(i), config.Index(i), path + "." + strconv.Itoa(i)); err != nil {
+		if err := c.configure(v.Index(i), config.Index(i), path+"."+strconv.Itoa(i)); err != nil {
 			return err
 		}
 	}
@@ -204,7 +204,7 @@ func (c *Config) configureMap(v, config reflect.Value, path string) error {
 	for _, k := range config.MapKeys() {
 		elemType := v.Type().Elem()
 		mapElem := reflect.New(elemType).Elem()
-		if err := c.configure(mapElem, mapIndex(config, k), path + "." + k.String()); err != nil {
+		if err := c.configure(mapElem, mapIndex(config, k), path+"."+k.String()); err != nil {
 			return err
 		}
 		v.SetMapIndex(k.Convert(v.Type().Key()), mapElem)
@@ -234,7 +234,7 @@ func (c *Config) configureStruct(v, config reflect.Value, path string) error {
 			}
 			field = field.Elem()
 		}
-		if err := c.configure(field, mapIndex(config, k), path + "." + k.String()); err != nil {
+		if err := c.configure(field, mapIndex(config, k), path+"."+k.String()); err != nil {
 			return err
 		}
 	}
@@ -278,7 +278,7 @@ func (c *Config) configureScalar(v, config reflect.Value, path string) error {
 		switch v.Kind() {
 		case reflect.Interface, reflect.Ptr, reflect.Map, reflect.Slice:
 			v.Set(reflect.Zero(v.Type()))
-		// otherwise, ignore null for primitives/string
+			// otherwise, ignore null for primitives/string
 		}
 		return nil
 	}

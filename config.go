@@ -8,24 +8,24 @@ package config
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"github.com/BurntSushi/toml"
+	"github.com/hnakamur/jsonpreprocess"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
-	"fmt"
-	"github.com/BurntSushi/toml"
-	"github.com/hnakamur/jsonpreprocess"
-	"gopkg.in/yaml.v2"
 )
 
 // UnmarshalFunc parses the given configuration and populates it into the given variable.
-type UnmarshalFunc func([]byte,  interface{}) error
+type UnmarshalFunc func([]byte, interface{}) error
 
 // UnmarshalFuncMap maps configuration file extensions to the corresponding unmarshal functions.
 var UnmarshalFuncMap = map[string]UnmarshalFunc{
 	".yaml": yaml.Unmarshal,
-	".yml": yaml.Unmarshal,
+	".yml":  yaml.Unmarshal,
 	".json": func(bytes []byte, data interface{}) (err error) {
 		if bytes, err = stripJSONComments(bytes); err != nil {
 			return
@@ -51,7 +51,7 @@ func (s FileTypeError) Error() string {
 
 // ConfigPathError describes a path which cannot be used to set a configuration value.
 type ConfigPathError struct {
-	Path string
+	Path    string
 	Message string
 }
 

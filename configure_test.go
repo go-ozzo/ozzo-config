@@ -5,8 +5,8 @@
 package config
 
 import (
-	"testing"
 	"reflect"
+	"testing"
 )
 
 type C interface {
@@ -16,6 +16,7 @@ type D struct {
 	E1 string
 	E2 string
 }
+
 func (d *D) Foo() {
 }
 
@@ -257,12 +258,12 @@ func TestConfigureNested(t *testing.T) {
 		A1 int
 		A2 *struct {
 			B1 struct {
-				   C1 int
-				   C2 string
-			   }
+				C1 int
+				C2 string
+			}
 			B2 string
 		}
-		A3 []struct{
+		A3 []struct {
 			B3 bool
 		}
 	}

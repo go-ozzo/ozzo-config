@@ -5,9 +5,9 @@
 package config
 
 import (
-	"testing"
 	"encoding/json"
 	"reflect"
+	"testing"
 )
 
 func TestGet(t *testing.T) {
@@ -212,7 +212,7 @@ func TestSetData(t *testing.T) {
 }
 
 func TestLoad(t *testing.T) {
-	tests := []struct{
+	tests := []struct {
 		f1, f2, expected string
 	}{
 		{"testdata/c1.json", "testdata/c2.json", `{"A1":"a1","A2":3,"A3":true,"A4":2.13,"A5":"a5","A6":{"B1":"b1","B2":{"C1":"c1","C2":"c2"}},"A7":["d1","d2"]}`},
@@ -238,8 +238,8 @@ func TestLoadYamlFile(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	tests := []struct{
-		name string
+	tests := []struct {
+		name     string
 		expected interface{}
 	}{
 		{"A1", "a1"},
