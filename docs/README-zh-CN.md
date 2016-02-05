@@ -4,9 +4,6 @@
 [![Build Status](https://travis-ci.org/go-ozzo/ozzo-config.svg?branch=master)](https://travis-ci.org/go-ozzo/ozzo-config)
 [![Coverage](http://gocover.io/_badge/github.com/go-ozzo/ozzo-config)](http://gocover.io/github.com/go-ozzo/ozzo-config)
 
-## 其他语言
-
-[English or other languages](../README.md)
 
 ## 说明
 
