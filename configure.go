@@ -221,6 +221,7 @@ func (c *Config) configureStruct(v, config reflect.Value, path string) error {
 		if k.String() == typeKey.String() {
 			continue
 		}
+		path = path + "." + k.String()
 		field := v.FieldByName(k.Interface().(string))
 		if !field.IsValid() {
 			return &ConfigValueError{path, fmt.Sprintf("field %v not found in struct %v", k.String(), v.Type())}
@@ -234,7 +235,7 @@ func (c *Config) configureStruct(v, config reflect.Value, path string) error {
 			}
 			field = field.Elem()
 		}
-		if err := c.configure(field, mapIndex(config, k), path+"."+k.String()); err != nil {
+		if err := c.configure(field, mapIndex(config, k), path); err != nil {
 			return err
 		}
 	}

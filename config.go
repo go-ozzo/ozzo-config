@@ -9,14 +9,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/BurntSushi/toml"
-	"github.com/hnakamur/jsonpreprocess"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
+
+	"github.com/BurntSushi/toml"
+	"github.com/hnakamur/jsonpreprocess"
+	"gopkg.in/yaml.v2"
 )
 
 // UnmarshalFunc parses the given configuration and populates it into the given variable.
