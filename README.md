@@ -2,7 +2,8 @@
 
 [![GoDoc](https://godoc.org/github.com/go-ozzo/ozzo-config?status.png)](http://godoc.org/github.com/go-ozzo/ozzo-config)
 [![Build Status](https://travis-ci.org/go-ozzo/ozzo-config.svg?branch=master)](https://travis-ci.org/go-ozzo/ozzo-config)
-[![Coverage](http://gocover.io/_badge/github.com/go-ozzo/ozzo-config)](http://gocover.io/github.com/go-ozzo/ozzo-config)
+[![Coverage Status](https://coveralls.io/repos/github/go-ozzo/ozzo-config/badge.svg?branch=master)](https://coveralls.io/github/go-ozzo/ozzo-config?branch=master)
+[![Go Report](https://goreportcard.com/badge/github.com/go-ozzo/ozzo-config)](https://goreportcard.com/report/github.com/go-ozzo/ozzo-config)
 
 ## Other languages
 
