@@ -140,3 +140,13 @@ how to create a concrete instance.
 ozzo-config supports three configuration file formats out-of-box: JSON (can contain comments), YAML, and TOML.
 To support reading new file formats, you should modify the `config.UnmarshalFuncMap` variable by mapping a
 new file extension to the corresponding unmarshal function.
+
+## Star History
+
+<a href="https://starhistory.io">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.starhistory.io/png?repos=go-ozzo/ozzo-config&style=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.starhistory.io/png?repos=go-ozzo/ozzo-config&style=professional" />
+   <img alt="Star History Chart" src="https://api.starhistory.io/png?repos=go-ozzo/ozzo-config" width="800" />
+ </picture>
+</a>
