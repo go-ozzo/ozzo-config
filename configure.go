@@ -169,6 +169,9 @@ func (c *Config) configureArray(v, config reflect.Value, path string) error {
 		reflect.Copy(t, v)
 		v.Set(t)
 	}
+	if vkind == reflect.Slice && v.Len() < n {
+		v.SetLen(n)
+	}
 
 	if n > v.Cap() {
 		n = v.Cap()

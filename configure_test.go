@@ -173,6 +173,71 @@ func TestConfigureArray(t *testing.T) {
 	}
 }
 
+func TestConfigureSliceCapacity(t *testing.T) {
+	tests := []struct {
+		length   int
+		capacity int
+	}{
+		{0, 0},
+		{0, 3},
+		{0, 5},
+		{1, 3},
+		{1, 5},
+		{2, 5},
+		{3, 3},
+		{4, 5},
+	}
+	for _, test := range tests {
+		func() {
+			defer func() {
+				if r := recover(); r != nil {
+					t.Errorf("Configure with len %v and cap %v panicked: %v", test.length, test.capacity, r)
+				}
+			}()
+			c := New()
+			if err := c.LoadJSON([]byte(`[10, 30, 20]`)); err != nil {
+				t.Fatal(err)
+			}
+			values := make([]int, test.length, test.capacity)
+			var first *int
+			if test.capacity > 0 {
+				first = &values[:test.capacity][0]
+			}
+			if err := c.Configure(&values); err != nil {
+				t.Errorf("Configure with len %v and cap %v: %v", test.length, test.capacity, err)
+				return
+			}
+			if !reflect.DeepEqual(values, []int{10, 30, 20}) {
+				t.Errorf("Configure with len %v and cap %v got %v", test.length, test.capacity, values)
+			}
+			if test.capacity >= 3 && (&values[0] != first || cap(values) != test.capacity) {
+				t.Errorf("Configure with len %v and cap %v replaced the backing array", test.length, test.capacity)
+			}
+		}()
+	}
+}
+
+func TestConfigureSliceReloads(t *testing.T) {
+	var obj struct {
+		Items []int
+	}
+	obj.Items = make([]int, 4, 5)
+	first := &obj.Items[0]
+	for _, expected := range [][]int{{10, 20}, {30, 40, 50}, {}, {60}} {
+		c := New()
+		c.SetData(map[string]interface{}{"Items": expected})
+		if err := c.Configure(&obj); err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(obj.Items, expected) {
+			t.Errorf("Configure got %v, expected %v", obj.Items, expected)
+		}
+		if &obj.Items[:cap(obj.Items)][0] != first || cap(obj.Items) != 5 {
+			t.Error("Configure replaced the backing array")
+		}
+	}
+}
+
 func TestConfigureMap(t *testing.T) {
 	c := New()
 	data := []byte(`{
