@@ -84,7 +84,7 @@ func TestConfigureScalar(t *testing.T) {
 		}
 
 		// pointer types
-		if reflect.TypeOf(test.val).Elem().Kind() == reflect.Ptr {
+		if reflect.TypeOf(test.val).Elem().Kind() == reflect.Pointer {
 			v := reflect.ValueOf(test.val).Elem().Elem().Interface()
 			if v != test.expected {
 				t.Errorf("Configure(%v) = %v, expected %v", test.json, v, test.expected)
@@ -157,7 +157,7 @@ func TestConfigureArray(t *testing.T) {
 			continue
 		}
 		v := reflect.ValueOf(test.val)
-		for v.Kind() == reflect.Ptr {
+		for v.Kind() == reflect.Pointer {
 			v = v.Elem()
 		}
 		expected := reflect.ValueOf(test.expected)
