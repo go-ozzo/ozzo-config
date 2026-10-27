@@ -6,6 +6,8 @@ package config
 
 import (
 	"encoding/json"
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -344,4 +346,50 @@ func TestMerge(t *testing.T) {
 			t.Errorf("merge(%v, %v) = %v, expected %v", test.base, test.update, string(s), test.expected)
 		}
 	}
+}
+
+// writeConfigFile writes content to a new file with the given name in a temporary directory
+// and returns its path.
+func writeConfigFile(t *testing.T, name, content string) string {
+	t.Helper()
+	file := filepath.Join(t.TempDir(), name)
+	if err := os.WriteFile(file, []byte(content), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	return file
+}
+
+// TestYAMLSemantics pins the semantics of the YAML parser (yaml v2, YAML 1.1) so that an
+// accidental switch to another major version, which behaves differently, fails the build.
+func TestYAMLSemantics(t *testing.T) {
+	c := New()
+	file := writeConfigFile(t, "c.yaml", "flag: yes\nwhen: 2001-12-14\nnested:\n  k: v\n")
+	if err := c.Load(file); err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("yes is a bool", func(t *testing.T) {
+		if v := c.Get("flag"); v != true {
+			t.Errorf("Get(%q) = %#v, expected true", "flag", v)
+		}
+		if !c.GetBool("flag") {
+			t.Errorf("GetBool(%q) = false, expected true", "flag")
+		}
+	})
+
+	t.Run("mappings are map[interface{}]interface{}", func(t *testing.T) {
+		expected := reflect.TypeOf(map[interface{}]interface{}{})
+		if got := reflect.TypeOf(c.Data()); got != expected {
+			t.Errorf("Data() has type %v, expected %v", got, expected)
+		}
+		if got := reflect.TypeOf(c.Get("nested")); got != expected {
+			t.Errorf("Get(%q) has type %v, expected %v", "nested", got, expected)
+		}
+	})
+
+	t.Run("timestamp stays a string", func(t *testing.T) {
+		if v := c.Get("when"); v != "2001-12-14" {
+			t.Errorf("Get(%q) = %#v, expected the string %q", "when", v, "2001-12-14")
+		}
+	})
 }
