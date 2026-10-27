@@ -31,7 +31,7 @@ type ConfigTargetError struct {
 
 // Error returns the error message represented by ConfigTargetError
 func (e *ConfigTargetError) Error() string {
-	if e.Value.Kind() != reflect.Ptr {
+	if e.Value.Kind() != reflect.Pointer {
 		return "Unable to configure a non-pointer"
 	}
 	if e.Value.IsNil() {
@@ -96,7 +96,7 @@ func (c *Config) Configure(v interface{}, path ...string) (err error) {
 	}()
 
 	rv := reflect.ValueOf(v)
-	if rv.Kind() != reflect.Ptr || rv.IsNil() {
+	if rv.Kind() != reflect.Pointer || rv.IsNil() {
 		return &ConfigTargetError{rv}
 	}
 
@@ -122,7 +122,7 @@ func (c *Config) configure(v, config reflect.Value, path string) error {
 	if !v.IsValid() {
 		return nil
 	}
-	for config.Kind() == reflect.Interface || config.Kind() == reflect.Ptr {
+	for config.Kind() == reflect.Interface || config.Kind() == reflect.Pointer {
 		config = config.Elem()
 	}
 
@@ -140,12 +140,9 @@ func (c *Config) configure(v, config reflect.Value, path string) error {
 		default:
 			return &ConfigValueError{path, "a map cannot be used to configure " + v.Type().String()}
 		}
-		return c.configureMap(v, config, path)
 	default:
 		return c.configureScalar(v, config, path)
 	}
-
-	return nil
 }
 
 func (c *Config) configureArray(v, config reflect.Value, path string) error {
@@ -229,7 +226,7 @@ func (c *Config) configureStruct(v, config reflect.Value, path string) error {
 		if !field.CanSet() {
 			return &ConfigValueError{path, fmt.Sprintf("field %v cannot be set", k.String())}
 		}
-		if field.Kind() == reflect.Ptr {
+		if field.Kind() == reflect.Pointer {
 			if field.IsNil() {
 				field.Set(reflect.New(field.Type().Elem()))
 			}
@@ -277,7 +274,7 @@ func (c *Config) configureInterface(v, config reflect.Value, path string) error 
 func (c *Config) configureScalar(v, config reflect.Value, path string) error {
 	if !config.IsValid() {
 		switch v.Kind() {
-		case reflect.Interface, reflect.Ptr, reflect.Map, reflect.Slice:
+		case reflect.Interface, reflect.Pointer, reflect.Map, reflect.Slice:
 			v.Set(reflect.Zero(v.Type()))
 			// otherwise, ignore null for primitives/string
 		}
@@ -299,20 +296,20 @@ func (c *Config) configureScalar(v, config reflect.Value, path string) error {
 }
 
 func indirect(v reflect.Value) reflect.Value {
-	if v.Kind() != reflect.Ptr && v.Type().Name() != "" && v.CanAddr() {
+	if v.Kind() != reflect.Pointer && v.Type().Name() != "" && v.CanAddr() {
 		v = v.Addr()
 	}
 	for {
 		// Load value from interface, but only if the result will be usefully addressable.
 		if v.Kind() == reflect.Interface && !v.IsNil() {
 			e := v.Elem()
-			if e.Kind() == reflect.Ptr && !e.IsNil() {
+			if e.Kind() == reflect.Pointer && !e.IsNil() {
 				v = e
 				continue
 			}
 		}
 
-		if v.Kind() != reflect.Ptr {
+		if v.Kind() != reflect.Pointer {
 			break
 		}
 

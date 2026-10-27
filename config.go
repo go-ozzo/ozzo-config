@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"reflect"
 	"strconv"
@@ -144,7 +144,7 @@ func (c *Config) GetString(path string, defaultValue ...string) string {
 	return c.Get(path, d).(string)
 }
 
-// GetString retrieves the int-typed configuration value corresponding to the specified path.
+// GetInt retrieves the int-typed configuration value corresponding to the specified path.
 // Please refer to Get for the detailed usage explanation.
 func (c *Config) GetInt(path string, defaultValue ...int) int {
 	var d int
@@ -154,7 +154,7 @@ func (c *Config) GetInt(path string, defaultValue ...int) int {
 	return c.Get(path, d).(int)
 }
 
-// GetString retrieves the int64-typed configuration value corresponding to the specified path.
+// GetInt64 retrieves the int64-typed configuration value corresponding to the specified path.
 // Please refer to Get for the detailed usage explanation.
 func (c *Config) GetInt64(path string, defaultValue ...int64) int64 {
 	var d int64
@@ -164,7 +164,7 @@ func (c *Config) GetInt64(path string, defaultValue ...int64) int64 {
 	return c.Get(path, d).(int64)
 }
 
-// GetString retrieves the float64-typed configuration value corresponding to the specified path.
+// GetFloat retrieves the float64-typed configuration value corresponding to the specified path.
 // Please refer to Get for the detailed usage explanation.
 func (c *Config) GetFloat(path string, defaultValue ...float64) float64 {
 	var d float64
@@ -174,7 +174,7 @@ func (c *Config) GetFloat(path string, defaultValue ...float64) float64 {
 	return c.Get(path, d).(float64)
 }
 
-// GetString retrieves the bool-typed configuration value corresponding to the specified path.
+// GetBool retrieves the bool-typed configuration value corresponding to the specified path.
 // Please refer to Get for the detailed usage explanation.
 func (c *Config) GetBool(path string, defaultValue ...bool) bool {
 	d := false
@@ -295,7 +295,7 @@ func (c *Config) LoadJSON(data ...[]byte) error {
 			return err
 		}
 		var d interface{}
-		if err = json.Unmarshal(bytes, &d); err != nil {
+		if err := json.Unmarshal(bytes, &d); err != nil {
 			return err
 		}
 		c.data = merge(c.data, reflect.ValueOf(d))
@@ -305,7 +305,7 @@ func (c *Config) LoadJSON(data ...[]byte) error {
 
 // load reads and parses a JSON, YAML, or TOML file.
 func load(file string, data interface{}) error {
-	bytes, err := ioutil.ReadFile(file)
+	bytes, err := os.ReadFile(file) //nolint:gosec // G304: reading the file the caller names is what Load is for
 	if err != nil {
 		return err
 	}
@@ -363,7 +363,7 @@ func getElement(v reflect.Value, p string) reflect.Value {
 	return reflect.Value{}
 }
 
-// setElement ses the element value of a map, array, or slice at the specified index.
+// setElement sets the element value of a map, array, or slice at the specified index.
 func setElement(data reflect.Value, p string, v interface{}) error {
 	value := reflect.ValueOf(v)
 	switch data.Kind() {
