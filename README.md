@@ -1,8 +1,8 @@
 # ozzo-config
 
-[![GoDoc](https://godoc.org/github.com/go-ozzo/ozzo-config?status.png)](http://godoc.org/github.com/go-ozzo/ozzo-config)
-[![Build Status](https://travis-ci.org/go-ozzo/ozzo-config.svg?branch=master)](https://travis-ci.org/go-ozzo/ozzo-config)
-[![Coverage Status](https://coveralls.io/repos/github/go-ozzo/ozzo-config/badge.svg?branch=master)](https://coveralls.io/github/go-ozzo/ozzo-config?branch=master)
+[![Go Reference](https://pkg.go.dev/badge/github.com/go-ozzo/ozzo-config.svg)](https://pkg.go.dev/github.com/go-ozzo/ozzo-config)
+[![CI](https://github.com/go-ozzo/ozzo-config/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/go-ozzo/ozzo-config/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/go-ozzo/ozzo-config/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ozzo/ozzo-config)
 [![Go Report](https://goreportcard.com/badge/github.com/go-ozzo/ozzo-config)](https://goreportcard.com/report/github.com/go-ozzo/ozzo-config)
 
 ## Other languages
@@ -22,7 +22,7 @@ ozzo-config is a Go package for handling configurations in Go applications. It s
 
 ## Requirements
 
-Go 1.2 or above.
+Go 1.21 or above.
 
 ## Installation
 
@@ -140,6 +140,33 @@ how to create a concrete instance.
 ozzo-config supports three configuration file formats out-of-box: JSON (can contain comments), YAML, and TOML.
 To support reading new file formats, you should modify the `config.UnmarshalFuncMap` variable by mapping a
 new file extension to the corresponding unmarshal function.
+
+## Format Notes
+
+The parsers come from other modules, and `go.mod` names their lowest supported versions. If your application
+requires a newer version of one of them, Go builds with that version, and its rules apply.
+
+**TOML** files are parsed by [BurntSushi/toml](https://github.com/BurntSushi/toml). The minimum, v0.3.1, follows
+TOML v0.4.0; its v1 releases accept TOML 1.0 syntax such as dotted keys and mixed-type arrays.
+
+**YAML** files are parsed by [gopkg.in/yaml.v2](https://github.com/go-yaml/yaml/tree/v2), with these semantics:
+
+* a mapping is loaded as `map[interface{}]interface{}`;
+* `yes`, `no`, `on`, `off`, `y` and `n` are booleans;
+* a timestamp such as `2001-12-14` stays a string.
+
+If you prefer YAML 1.2 and the semantics of yaml v3, register its `Unmarshal` function for the YAML extensions
+before loading any files:
+
+```go
+import yaml "go.yaml.in/yaml/v3"
+
+config.UnmarshalFuncMap[".yaml"] = yaml.Unmarshal
+config.UnmarshalFuncMap[".yml"] = yaml.Unmarshal
+```
+
+With yaml v3 a mapping with string keys is loaded as `map[string]interface{}`, `yes` is the string `"yes"`, a
+timestamp becomes a `time.Time`, and a duplicate key in a mapping is an error.
 
 ## Star History
 
