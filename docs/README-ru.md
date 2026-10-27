@@ -1,8 +1,8 @@
 # ozzo-config
 
-[![GoDoc](https://godoc.org/github.com/go-ozzo/ozzo-config?status.png)](http://godoc.org/github.com/go-ozzo/ozzo-config)
-[![Build Status](https://travis-ci.org/go-ozzo/ozzo-config.svg?branch=master)](https://travis-ci.org/go-ozzo/ozzo-config)
-[![Coverage](http://gocover.io/_badge/github.com/go-ozzo/ozzo-config)](http://gocover.io/github.com/go-ozzo/ozzo-config)
+[![Go Reference](https://pkg.go.dev/badge/github.com/go-ozzo/ozzo-config.svg)](https://pkg.go.dev/github.com/go-ozzo/ozzo-config)
+[![CI](https://github.com/go-ozzo/ozzo-config/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/go-ozzo/ozzo-config/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/go-ozzo/ozzo-config/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ozzo/ozzo-config)
 
 ozzo-config — это пакет Go для работы с конфигурациями. Он поддерживает
 
@@ -14,7 +14,7 @@ ozzo-config — это пакет Go для работы с конфигурац
 
 ## Требования
 
-Go 1.2 или выше.
+Go 1.21 или выше.
 
 ## Установка
 
